@@ -1,10 +1,17 @@
 .top {
     display: flex;
-    column-gap: 15px;
+    gap: 15px;
     margin-bottom: 30px;
-    input {
-        flex-grow: 1;
-        padding: 5px 10px;
-        font-weight: 600;
+}
+
+.top input {
+    flex-grow: 1;
+    padding: 5px 10px;
+    font-weight: 600;
+}
+
+@media (max-width: 768px) {
+    .top {
+        flex-direction: column;
     }
 }
