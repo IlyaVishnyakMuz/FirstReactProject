@@ -6,6 +6,7 @@
     padding: 15px;
     border-radius: 10px;
     cursor: grab;
+    background: red !important;
 }
 .item p {
     margin-left: auto;
