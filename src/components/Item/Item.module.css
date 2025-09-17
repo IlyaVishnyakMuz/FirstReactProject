@@ -1,7 +1,7 @@
 .item {
     display: flex;
     align-items: center;
-    background: rgb(184, 184, 184);
+    /* background: rgb(184, 184, 184); */
     color: white;
     padding: 15px;
     border-radius: 10px;
