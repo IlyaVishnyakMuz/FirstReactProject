@@ -1,12 +1,27 @@
 import classes from './App.module.css'
-import { Item } from './components/Item/Item'
-import { Empty } from './components/Empty/Empty'
+import { Item } from '../Item/Item'
+import { Empty } from '../Empty/Empty'
 import { useState } from 'react'
-import { Top } from './components/Top/Top';
+import { Top } from '../Top/Top';
+
+const localStorageName = 'items';
+
+function saveItems(items) {
+  if(items == null) {
+    localStorage.setItem(localStorageName, []);
+  } else {
+    localStorage.setItem(localStorageName, JSON.stringify(items));
+  }
+}
+
+function getItems() {
+  let items = localStorage.getItem(localStorageName);
+  return JSON.parse(items || "[]")
+}
 
 export default function App() {
   const [title, setTitle] = useState('');
-  const [items, setItems] = useState([]);
+  const [items, setItems] = useState(getItems);
   const [draggedItem, setDraggedItem] = useState(null);
   const [isEmpty, setIsEmpty] = useState(items.length == 0);
 
@@ -15,11 +30,11 @@ export default function App() {
   };
 
   function handleDrop(index) {
-    console.log(index)
     const newItems = [...items];
     const [removed] = newItems.splice(draggedItem, 1);
     newItems.splice(index, 0, removed);
     setItems(newItems);
+    saveItems(newItems);
     setDraggedItem(null);
   };
 
@@ -32,14 +47,18 @@ export default function App() {
       return
     }
     const currentTime = new Date()
-    setItems(prev => [
-      ...prev,
-      {
-        'id': items.length,
-        'title': title,
-        'time': currentTime.toLocaleTimeString()
-      }]
-    );
+    setItems(prev => {
+      const newArray = [
+        ...prev,
+        {
+          'id': items.length,
+          'title': title,
+          'time': currentTime.toLocaleTimeString()
+        }
+      ]
+      saveItems(newArray);
+      return newArray;
+    });
     setTitle('')
     setIsEmpty(false);
   }
@@ -48,12 +67,18 @@ export default function App() {
     setItems(prev => {
       const filteredItems = prev.filter(item => item.id != itemId)
       setIsEmpty(filteredItems.length == 0)
+      if (filteredItems.length == 0) {
+        saveItems(null);
+      } else {
+        saveItems(filteredItems);
+      }
       return filteredItems
     })
   }
 
   function removeAll() {
     setIsEmpty(true);
+    saveItems(null)
     setItems([])
   }
 
@@ -72,7 +97,7 @@ export default function App() {
               <Item 
                 key={item.id} 
                 {...item} 
-                onClick={() => removeItem(item.id)}
+                onRemove={() => removeItem(item.id)}
                 draggable
                 onDragStart={() => handleDragStart(index)}
                 onDragOver={(e) => e.preventDefault()}

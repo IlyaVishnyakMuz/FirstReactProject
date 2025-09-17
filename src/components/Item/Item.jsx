@@ -11,7 +11,7 @@ export function Item(props) {
         >
             <h3>{props.title}</h3>
             <p>{props.time}</p>
-            <button onClick={props.onClick}>Сделано</button>
+            <button onClick={props.onRemove}>Сделано</button>
         </div>
     )
 }
