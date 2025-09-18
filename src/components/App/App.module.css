@@ -3,9 +3,3 @@
     margin: 0 auto;
     padding: 30px;
 }
-
-.items {
-    display: flex;
-    flex-direction: column-reverse;
-    row-gap: 15px;
-}
