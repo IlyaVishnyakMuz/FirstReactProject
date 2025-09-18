@@ -1,7 +1,7 @@
 import classes from './App.module.css'
 import { Items } from '../Items/Items'
 import { Top } from '../Top/Top'
-import { useItems } from '../../common/LocalStorage.js'
+import { useItems } from '../../hooks/useItems.jsx'
 
 export default function App() {
   const [items, setItems] = useItems();
